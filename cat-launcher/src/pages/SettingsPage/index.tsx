@@ -1,8 +1,10 @@
 import { useCallback } from "react";
 
-import { Button } from "@/components/ui/button";
 import { toastCL } from "@/lib/utils";
+import { ColorSettings } from "./components/ColorSettings";
 import { FontSettings } from "./components/FontSettings";
+import { MasterReset } from "./components/MasterReset";
+import { SettingsPageFooter } from "./components/SettingsPageFooter";
 import { useSettingsForm } from "./hooks";
 
 export default function SettingsPage() {
@@ -47,38 +49,19 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="container mx-auto py-10 max-w-2xl px-4">
+    <div className="container mx-auto max-w-2xl px-4 pb-24">
       <form onSubmit={apply} className="space-y-8">
         <FontSettings control={form.control} />
+        <ColorSettings control={form.control} />
+        <MasterReset />
 
-        <div className="flex justify-end gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => {
-              if (!isUpdating) {
-                resetToDefault();
-              }
-            }}
-            disabled={isUpdating}
-          >
-            Reset to Default
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={cancel}
-            disabled={!form.formState.isDirty}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            disabled={!form.formState.isDirty || isUpdating}
-          >
-            Apply
-          </Button>
-        </div>
+        <SettingsPageFooter
+          isDirty={form.formState.isDirty}
+          isUpdating={isUpdating}
+          apply={apply}
+          cancel={cancel}
+          resetToDefault={resetToDefault}
+        />
       </form>
     </div>
   );
